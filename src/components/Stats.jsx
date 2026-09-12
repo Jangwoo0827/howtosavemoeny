@@ -1,11 +1,14 @@
 import { categoryBreakdown, weeklyTrend } from "../utils/stats";
 import { categoryOf } from "../utils/categories";
 import CategoryIcon from "./CategoryIcon";
+import LineChart from "./LineChart";
+
+const WEEK_LABELS = ["3주 전", "2주 전", "1주 전", "이번 주"];
 
 export default function Stats({ state }) {
   const breakdown = categoryBreakdown(state.transactions);
   const trend = weeklyTrend(state.transactions);
-  const maxTrend = Math.max(1, ...trend);
+  const trendData = trend.map((value, i) => ({ label: WEEK_LABELS[i], value }));
 
   return (
     <div className="screen">
@@ -41,20 +44,7 @@ export default function Stats({ state }) {
       <div className="card">
         <h2 className="card-title">주마다 쓰는 돈</h2>
         <p className="muted">최근 4주 지출 추이</p>
-        <div className="trend-chart">
-          {trend.map((amount, i) => (
-            <div className="trend-col" key={i}>
-              <div className="trend-bar-track">
-                <div
-                  className="trend-bar-fill"
-                  style={{ height: `${(amount / maxTrend) * 100}%` }}
-                />
-              </div>
-              <span className="trend-amount">{amount > 0 ? `${Math.round(amount / 1000)}k` : "-"}</span>
-              <span className="trend-label">{i === 3 ? "이번 주" : `${3 - i}주 전`}</span>
-            </div>
-          ))}
-        </div>
+        <LineChart data={trendData} />
       </div>
     </div>
   );
