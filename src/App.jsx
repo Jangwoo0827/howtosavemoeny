@@ -106,6 +106,7 @@ export default function App() {
       transactions: s.transactions.filter((t) => !t.isTest),
       noSpendDays: [],
       goal: { ...s.goal, saved: 0 },
+      linkedAccount: null,
     }));
   }
 

@@ -142,7 +142,7 @@ export default function BankLink({
             🎯 저축 목표 100% 채우기
           </button>
           <button className="test-tool-btn test-tool-danger" onClick={onResetTestData}>
-            🗑️ 테스트 데이터 초기화
+            🗑️ 전체 초기화 (연동 해제 포함)
           </button>
         </div>
       </div>
