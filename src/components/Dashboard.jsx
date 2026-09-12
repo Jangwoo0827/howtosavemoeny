@@ -100,7 +100,10 @@ export default function Dashboard({ state, onNavigate }) {
                 <li key={t.id} className="tx-item">
                   <CategoryIcon categoryId={t.category} />
                   <div className="tx-info">
-                    <span className="tx-label">{t.memo || cat.label}</span>
+                    <span className="tx-label">
+                      {t.memo || cat.label}
+                      {t.isTest && <span className="test-tag">가짜</span>}
+                    </span>
                     <span className="tx-date">{formatDate(t.date)}</span>
                   </div>
                   <span className="tx-amount">-{t.amount.toLocaleString()}원</span>

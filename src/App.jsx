@@ -8,6 +8,9 @@ import Stats from "./components/Stats";
 import Challenge from "./components/Challenge";
 import AIAdvisor from "./components/AIAdvisor";
 import BankLink from "./components/BankLink";
+import { generateBackfillTransactions } from "./utils/mockBank";
+
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 export default function App() {
   const [state, setState] = useState(loadState);
@@ -76,6 +79,36 @@ export default function App() {
     }));
   }
 
+  function fillTestStreak(days = 7) {
+    setState((s) => {
+      const keys = [];
+      for (let i = 1; i <= days; i++) {
+        keys.push(new Date(Date.now() - i * DAY_MS).toISOString().slice(0, 10));
+      }
+      return { ...s, noSpendDays: [...new Set([...s.noSpendDays, ...keys])] };
+    });
+  }
+
+  function fillTestHistory(weeks = 4) {
+    setState((s) => ({
+      ...s,
+      transactions: [...s.transactions, ...generateBackfillTransactions(weeks)],
+    }));
+  }
+
+  function completeTestGoal() {
+    setState((s) => ({ ...s, goal: { ...s.goal, saved: s.goal.target } }));
+  }
+
+  function resetTestData() {
+    setState((s) => ({
+      ...s,
+      transactions: s.transactions.filter((t) => !t.isTest),
+      noSpendDays: [],
+      goal: { ...s.goal, saved: 0 },
+    }));
+  }
+
   return (
     <div className="app-shell">
       <main className="app-content">
@@ -104,6 +137,10 @@ export default function App() {
             onLinkAccount={linkAccount}
             onUnlinkAccount={unlinkAccount}
             onImportTransactions={importTransactions}
+            onFillTestStreak={fillTestStreak}
+            onFillTestHistory={fillTestHistory}
+            onCompleteTestGoal={completeTestGoal}
+            onResetTestData={resetTestData}
           />
         )}
       </main>

@@ -3,7 +3,16 @@ import { BANKS, generateMockAccount, generateMockTransactions } from "../utils/m
 import CategoryIcon from "./CategoryIcon";
 import { categoryOf } from "../utils/categories";
 
-export default function BankLink({ state, onLinkAccount, onUnlinkAccount, onImportTransactions }) {
+export default function BankLink({
+  state,
+  onLinkAccount,
+  onUnlinkAccount,
+  onImportTransactions,
+  onFillTestStreak,
+  onFillTestHistory,
+  onCompleteTestGoal,
+  onResetTestData,
+}) {
   const [connecting, setConnecting] = useState(null);
   const [pending, setPending] = useState([]);
   const [imported, setImported] = useState(false);
@@ -96,7 +105,10 @@ export default function BankLink({ state, onLinkAccount, onUnlinkAccount, onImpo
                       <li key={t.id} className="tx-item">
                         <CategoryIcon categoryId={t.category} size={36} />
                         <div className="tx-info">
-                          <span className="tx-label">{t.memo || cat.label}</span>
+                          <span className="tx-label">
+                            {t.memo || cat.label}
+                            {t.isTest && <span className="test-tag">가짜</span>}
+                          </span>
                           <span className="tx-date">{cat.label}</span>
                         </div>
                         <span className="tx-amount">-{t.amount.toLocaleString()}원</span>
@@ -112,6 +124,28 @@ export default function BankLink({ state, onLinkAccount, onUnlinkAccount, onImpo
           </div>
         </>
       )}
+
+      <div className="card test-tool-card">
+        <h2 className="card-title">🧪 테스트 도구</h2>
+        <p className="muted">
+          실제 서비스엔 없는 개발용 기능이에요. 일주일씩 안 기다리고 바로 테스트해보세요.
+          여기서 만든 데이터는 전부 <span className="test-tag">가짜</span> 표시가 붙어요.
+        </p>
+        <div className="test-tool-grid">
+          <button className="test-tool-btn" onClick={() => onFillTestStreak(7)}>
+            🔥 무지출 7일 채우기
+          </button>
+          <button className="test-tool-btn" onClick={() => onFillTestHistory(4)}>
+            📊 지난 4주 지출 채우기
+          </button>
+          <button className="test-tool-btn" onClick={onCompleteTestGoal}>
+            🎯 저축 목표 100% 채우기
+          </button>
+          <button className="test-tool-btn test-tool-danger" onClick={onResetTestData}>
+            🗑️ 테스트 데이터 초기화
+          </button>
+        </div>
+      </div>
 
       <p className="bank-disclaimer">
         * 데모용 목업이에요. 실제 계좌 정보와 연결되지 않으며, 실제 서비스에서는 금융결제원

@@ -42,5 +42,29 @@ export function generateMockTransactions(count = 4) {
     memo: p.merchant,
     date: new Date(Date.now() - randomInt(0, 3) * DAY_MS - i * 3600_000).toISOString(),
     fromBank: true,
+    isTest: true,
   }));
+}
+
+// Backfills fake transactions spread across the last `weeks` weeks, so
+// week-over-week features (trend chart, "지난주 대비" comparison) have
+// data to show without waiting for real usage to accumulate.
+export function generateBackfillTransactions(weeks = 4, perWeek = 4) {
+  const DAY_MS = 24 * 60 * 60 * 1000;
+  const result = [];
+  for (let w = 0; w < weeks; w++) {
+    for (let i = 0; i < perWeek; i++) {
+      const p = SAMPLE_TX[randomInt(0, SAMPLE_TX.length - 1)];
+      const dayOffset = w * 7 + randomInt(0, 6);
+      result.push({
+        id: `test-${Date.now()}-${w}-${i}-${randomInt(0, 9999)}`,
+        amount: randomInt(p.min, p.max),
+        category: p.category,
+        memo: p.merchant,
+        date: new Date(Date.now() - dayOffset * DAY_MS).toISOString(),
+        isTest: true,
+      });
+    }
+  }
+  return result;
 }

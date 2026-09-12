@@ -665,6 +665,43 @@
   margin: 4px 0 16px;
 }
 
+.test-tag {
+  display: inline-block;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 1px 6px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.test-tool-card {
+  border: 1px dashed var(--text-muted);
+}
+
+.test-tool-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.test-tool-btn {
+  background: var(--bg);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.test-tool-danger {
+  color: var(--danger);
+}
+
 /* Tab bar */
 .tab-bar {
   position: fixed;

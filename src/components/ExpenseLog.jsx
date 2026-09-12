@@ -101,7 +101,10 @@ export default function ExpenseLog({ state, onAddTransaction, onDeleteTransactio
                     <li key={t.id} className="tx-item">
                       <CategoryIcon categoryId={t.category} size={36} />
                       <div className="tx-info">
-                        <span className="tx-label">{t.memo || cat.label}</span>
+                        <span className="tx-label">
+                          {t.memo || cat.label}
+                          {t.isTest && <span className="test-tag">가짜</span>}
+                        </span>
                         <span className="tx-date">{cat.label}</span>
                       </div>
                       <span className="tx-amount">-{t.amount.toLocaleString()}원</span>
