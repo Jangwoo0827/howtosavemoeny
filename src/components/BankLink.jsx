@@ -11,7 +11,7 @@ export default function BankLink({
   onFillTestStreak,
   onFillTestHistory,
   onCompleteTestGoal,
-  onResetTestData,
+  onResetAll,
 }) {
   const [connecting, setConnecting] = useState(null);
   const [pending, setPending] = useState([]);
@@ -130,6 +130,7 @@ export default function BankLink({
         <p className="muted">
           실제 서비스엔 없는 개발용 기능이에요. 일주일씩 안 기다리고 바로 테스트해보세요.
           여기서 만든 데이터는 전부 <span className="test-tag">가짜</span> 표시가 붙어요.
+          단, 전체 초기화는 직접 입력한 지출까지 포함해서 앱의 모든 데이터를 지워요.
         </p>
         <div className="test-tool-grid">
           <button className="test-tool-btn" onClick={() => onFillTestStreak(7)}>
@@ -141,8 +142,8 @@ export default function BankLink({
           <button className="test-tool-btn" onClick={onCompleteTestGoal}>
             🎯 저축 목표 100% 채우기
           </button>
-          <button className="test-tool-btn test-tool-danger" onClick={onResetTestData}>
-            🗑️ 전체 초기화 (연동 해제 포함)
+          <button className="test-tool-btn test-tool-danger" onClick={onResetAll}>
+            🗑️ 전체 초기화 (모든 데이터 삭제)
           </button>
         </div>
       </div>

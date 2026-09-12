@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { loadState, saveState } from "./utils/storage";
+import { loadState, saveState, DEFAULT_STATE } from "./utils/storage";
 import TabBar from "./components/TabBar";
 import Dashboard from "./components/Dashboard";
 import ExpenseLog from "./components/ExpenseLog";
@@ -100,13 +100,12 @@ export default function App() {
     setState((s) => ({ ...s, goal: { ...s.goal, saved: s.goal.target } }));
   }
 
-  function resetTestData() {
-    setState((s) => ({
-      ...s,
-      transactions: s.transactions.filter((t) => !t.isTest),
+  function resetAll() {
+    setState(() => ({
+      ...DEFAULT_STATE,
+      goal: { ...DEFAULT_STATE.goal },
+      transactions: [],
       noSpendDays: [],
-      goal: { ...s.goal, saved: 0 },
-      linkedAccount: null,
     }));
   }
 
@@ -141,7 +140,7 @@ export default function App() {
             onFillTestStreak={fillTestStreak}
             onFillTestHistory={fillTestHistory}
             onCompleteTestGoal={completeTestGoal}
-            onResetTestData={resetTestData}
+            onResetAll={resetAll}
           />
         )}
       </main>

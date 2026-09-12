@@ -3,6 +3,8 @@ import { CATEGORIES, categoryOf } from "../utils/categories";
 import { computeCategoryNudge } from "../utils/nudge";
 import CategoryIcon from "./CategoryIcon";
 
+const MAX_AMOUNT = 10_000_000;
+
 export default function ExpenseLog({ state, onAddTransaction, onDeleteTransaction, onSetBudget }) {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState(CATEGORIES[0].id);
@@ -12,7 +14,7 @@ export default function ExpenseLog({ state, onAddTransaction, onDeleteTransactio
   function handleSubmit(e) {
     e.preventDefault();
     const value = Number(amount);
-    if (!value || value <= 0) return;
+    if (!value || value <= 0 || value > MAX_AMOUNT) return;
     onAddTransaction({ amount: value, category, memo: memo.trim() });
     setAmount("");
     setMemo("");
@@ -36,8 +38,10 @@ export default function ExpenseLog({ state, onAddTransaction, onDeleteTransactio
             type="number"
             inputMode="numeric"
             placeholder="0"
+            min="0"
+            max={MAX_AMOUNT}
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => setAmount(e.target.value.slice(0, 8))}
           />
         </div>
         <div className="field">

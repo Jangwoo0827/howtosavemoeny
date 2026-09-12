@@ -1,12 +1,14 @@
 const KEY = "saveteen_v1";
 
-const defaultState = {
+export const DEFAULT_STATE = {
   budget: 50000,
   transactions: [],
   noSpendDays: [],
   goal: { title: "무선이어폰 사기", target: 150000, saved: 0 },
   linkedAccount: null,
 };
+
+const defaultState = DEFAULT_STATE;
 
 export function loadState() {
   try {
