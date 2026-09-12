@@ -1,8 +1,16 @@
 import ProgressBar from "./ProgressBar";
+import CategoryIcon from "./CategoryIcon";
 import { categoryOf } from "../utils/categories";
 import { computeBudgetNudge } from "../utils/nudge";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+const QUICK_ACTIONS = [
+  { id: "log", icon: "➕", label: "지출 추가" },
+  { id: "challenge", icon: "🔥", label: "챌린지" },
+  { id: "stats", icon: "📊", label: "통계" },
+  { id: "ai", icon: "🤖", label: "AI 분석" },
+];
 
 export default function Dashboard({ state, onNavigate }) {
   const { budget, transactions, noSpendDays, goal } = state;
@@ -21,6 +29,16 @@ export default function Dashboard({ state, onNavigate }) {
 
   return (
     <div className="screen">
+      <div className="topbar">
+        <div>
+          <p className="topbar-greeting">안녕하세요 👋</p>
+          <p className="topbar-sub">오늘도 절약 습관 만들어봐요</p>
+        </div>
+        <button className="topbar-bell" aria-label="알림">
+          🔔
+        </button>
+      </div>
+
       {nudge && (
         <div className={`nudge-banner nudge-${nudge.level}`}>
           🚫 {nudge.message}
@@ -34,6 +52,15 @@ export default function Dashboard({ state, onNavigate }) {
           {budget.toLocaleString()}원 중 {spent.toLocaleString()}원 사용
         </p>
       </header>
+
+      <div className="quick-actions">
+        {QUICK_ACTIONS.map((a) => (
+          <button key={a.id} className="quick-action" onClick={() => onNavigate(a.id)}>
+            <span className="quick-action-icon">{a.icon}</span>
+            <span className="quick-action-label">{a.label}</span>
+          </button>
+        ))}
+      </div>
 
       <div className="card-grid">
         <button className="stat-card" onClick={() => onNavigate("challenge")}>
@@ -65,7 +92,7 @@ export default function Dashboard({ state, onNavigate }) {
               const cat = categoryOf(t.category);
               return (
                 <li key={t.id} className="tx-item">
-                  <span className="tx-emoji">{cat.emoji}</span>
+                  <CategoryIcon categoryId={t.category} />
                   <div className="tx-info">
                     <span className="tx-label">{t.memo || cat.label}</span>
                     <span className="tx-date">{formatDate(t.date)}</span>
@@ -77,10 +104,6 @@ export default function Dashboard({ state, onNavigate }) {
           </ul>
         )}
       </section>
-
-      <button className="cta-btn" onClick={() => onNavigate("ai")}>
-        🤖 AI 소비 분석 보러가기
-      </button>
     </div>
   );
 }

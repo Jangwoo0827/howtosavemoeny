@@ -1,7 +1,6 @@
 import { categoryBreakdown, weeklyTrend } from "../utils/stats";
 import { categoryOf } from "../utils/categories";
-
-const BAR_COLORS = ["#16a596", "#ff8a65", "#5b8def", "#f4b942", "#c084fc", "#ef5757", "#9aa0ab"];
+import CategoryIcon from "./CategoryIcon";
 
 export default function Stats({ state }) {
   const breakdown = categoryBreakdown(state.transactions);
@@ -18,17 +17,17 @@ export default function Stats({ state }) {
           <p className="empty">아직 이번 주 지출 기록이 없어요.</p>
         ) : (
           <ul className="bar-list">
-            {breakdown.map((b, i) => {
+            {breakdown.map((b) => {
               const cat = categoryOf(b.category);
               return (
                 <li key={b.category} className="bar-row">
                   <span className="bar-label">
-                    {cat.emoji} {cat.label}
+                    <CategoryIcon categoryId={b.category} size={22} /> {cat.label}
                   </span>
                   <div className="bar-track">
                     <div
                       className="bar-fill"
-                      style={{ width: `${b.pct}%`, background: BAR_COLORS[i % BAR_COLORS.length] }}
+                      style={{ width: `${b.pct}%`, background: cat.color }}
                     />
                   </div>
                   <span className="bar-value">{b.total.toLocaleString()}원</span>

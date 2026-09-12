@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { CATEGORIES, categoryOf } from "../utils/categories";
 import { computeCategoryNudge } from "../utils/nudge";
+import CategoryIcon from "./CategoryIcon";
 
 export default function ExpenseLog({ state, onAddTransaction, onDeleteTransaction, onSetBudget }) {
   const [amount, setAmount] = useState("");
@@ -98,7 +99,7 @@ export default function ExpenseLog({ state, onAddTransaction, onDeleteTransactio
                   const cat = categoryOf(t.category);
                   return (
                     <li key={t.id} className="tx-item">
-                      <span className="tx-emoji">{cat.emoji}</span>
+                      <CategoryIcon categoryId={t.category} size={36} />
                       <div className="tx-info">
                         <span className="tx-label">{t.memo || cat.label}</span>
                         <span className="tx-date">{cat.label}</span>
