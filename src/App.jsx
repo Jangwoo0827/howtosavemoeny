@@ -8,6 +8,7 @@ import Stats from "./components/Stats";
 import Challenge from "./components/Challenge";
 import AIAdvisor from "./components/AIAdvisor";
 import BankLink from "./components/BankLink";
+import Onboarding from "./components/Onboarding";
 import { generateBackfillTransactions } from "./utils/mockBank";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -107,6 +108,18 @@ export default function App() {
       transactions: [],
       noSpendDays: [],
     }));
+  }
+
+  function completeOnboarding({ budget, goal }) {
+    setState((s) => ({ ...s, onboarded: true, budget, goal }));
+  }
+
+  if (!state.onboarded) {
+    return (
+      <div className="app-shell">
+        <Onboarding onComplete={completeOnboarding} />
+      </div>
+    );
   }
 
   return (

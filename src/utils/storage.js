@@ -1,6 +1,7 @@
 const KEY = "saveteen_v1";
 
 export const DEFAULT_STATE = {
+  onboarded: false,
   budget: 50000,
   transactions: [],
   noSpendDays: [],
