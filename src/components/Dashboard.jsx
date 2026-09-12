@@ -7,9 +7,9 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 
 const QUICK_ACTIONS = [
   { id: "log", icon: "➕", label: "지출 추가" },
+  { id: "bank", icon: "🏦", label: "계좌 연동" },
   { id: "challenge", icon: "🔥", label: "챌린지" },
   { id: "stats", icon: "📊", label: "통계" },
-  { id: "ai", icon: "🤖", label: "AI 분석" },
 ];
 
 export default function Dashboard({ state, onNavigate }) {
@@ -38,6 +38,12 @@ export default function Dashboard({ state, onNavigate }) {
           🔔
         </button>
       </div>
+
+      {state.linkedAccount && (
+        <button className="bank-pill" onClick={() => onNavigate("bank")}>
+          🏦 {state.linkedAccount.bankName} 연동됨
+        </button>
+      )}
 
       {nudge && (
         <div className={`nudge-banner nudge-${nudge.level}`}>

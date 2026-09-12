@@ -5,6 +5,7 @@ const defaultState = {
   transactions: [],
   noSpendDays: [],
   goal: { title: "무선이어폰 사기", target: 150000, saved: 0 },
+  linkedAccount: null,
 };
 
 export function loadState() {

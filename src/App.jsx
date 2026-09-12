@@ -7,6 +7,7 @@ import ExpenseLog from "./components/ExpenseLog";
 import Stats from "./components/Stats";
 import Challenge from "./components/Challenge";
 import AIAdvisor from "./components/AIAdvisor";
+import BankLink from "./components/BankLink";
 
 export default function App() {
   const [state, setState] = useState(loadState);
@@ -60,6 +61,21 @@ export default function App() {
     }));
   }
 
+  function linkAccount(account) {
+    setState((s) => ({ ...s, linkedAccount: account }));
+  }
+
+  function unlinkAccount() {
+    setState((s) => ({ ...s, linkedAccount: null }));
+  }
+
+  function importTransactions(newTransactions) {
+    setState((s) => ({
+      ...s,
+      transactions: [...s.transactions, ...newTransactions],
+    }));
+  }
+
   return (
     <div className="app-shell">
       <main className="app-content">
@@ -82,6 +98,14 @@ export default function App() {
           />
         )}
         {tab === "ai" && <AIAdvisor state={state} />}
+        {tab === "bank" && (
+          <BankLink
+            state={state}
+            onLinkAccount={linkAccount}
+            onUnlinkAccount={unlinkAccount}
+            onImportTransactions={importTransactions}
+          />
+        )}
       </main>
       <TabBar active={tab} onChange={setTab} />
     </div>
