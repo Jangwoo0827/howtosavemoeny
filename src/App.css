@@ -786,6 +786,23 @@
   padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
 }
 
+.tab-indicator-track {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  height: 3px;
+  display: flex;
+  justify-content: center;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease;
+}
+
+.tab-indicator-pill {
+  width: 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
 .tab-btn {
   flex: 1;
   background: none;
@@ -813,14 +830,191 @@
 
 .tab-active .tab-emoji {
   opacity: 1;
+  animation: tabIconPop 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.tab-active::before {
-  content: "";
-  position: absolute;
-  top: -6px;
-  width: 18px;
-  height: 3px;
-  border-radius: 999px;
-  background: var(--accent);
+/* ---------------------------------------------------------------- */
+/* Motion system                                                     */
+/* Screens are re-mounted on every tab switch, so a plain `animation` */
+/* (not `transition`) replays automatically each time a tab opens.    */
+/* ---------------------------------------------------------------- */
+
+@keyframes screenChildIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.screen > *,
+.onboarding-step > * {
+  animation: screenChildIn 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.screen > *:nth-child(1),
+.onboarding-step > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.screen > *:nth-child(2),
+.onboarding-step > *:nth-child(2) {
+  animation-delay: 40ms;
+}
+.screen > *:nth-child(3),
+.onboarding-step > *:nth-child(3) {
+  animation-delay: 80ms;
+}
+.screen > *:nth-child(4),
+.onboarding-step > *:nth-child(4) {
+  animation-delay: 120ms;
+}
+.screen > *:nth-child(5),
+.onboarding-step > *:nth-child(5) {
+  animation-delay: 160ms;
+}
+.screen > *:nth-child(6),
+.onboarding-step > *:nth-child(6) {
+  animation-delay: 200ms;
+}
+.screen > *:nth-child(n + 7),
+.onboarding-step > *:nth-child(n + 7) {
+  animation-delay: 240ms;
+}
+
+@keyframes tabIconPop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.28);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Tap feedback — every interactive tile shrinks slightly on press */
+.quick-action,
+.stat-card,
+.bank-tile,
+.chip,
+.tab-btn,
+.test-tool-btn,
+.tx-item,
+.link-btn {
+  transition: transform 130ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.quick-action:active,
+.stat-card:active,
+.bank-tile:active:not(:disabled),
+.chip:active,
+.tab-btn:active,
+.test-tool-btn:active {
+  transform: scale(0.94);
+}
+
+.cta-btn {
+  transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.15s ease;
+}
+
+.cta-btn:active {
+  transform: scale(0.96);
+}
+
+/* Numbers pop in slightly after their card slides into place */
+@keyframes numberPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero-amount,
+.stat-value,
+.onboarding-amount {
+  animation: numberPop 420ms 120ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Progress / stat bars grow in from zero width */
+@keyframes barGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.progress-fill,
+.bar-fill {
+  transform-origin: left;
+  animation: barGrow 550ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Celebration bounce for completed actions */
+@keyframes successPop {
+  0% {
+    transform: scale(0.92);
+  }
+  55% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cta-btn-done {
+  animation: successPop 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes markPop {
+  0% {
+    transform: scale(0);
+  }
+  65% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.day-done .day-mark {
+  display: inline-block;
+  animation: markPop 340ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Chat bubbles cascade in one after another */
+.chat-thread .chat-bubble {
+  animation: screenChildIn 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.chat-thread .chat-bubble:nth-child(1) { animation-delay: 80ms; }
+.chat-thread .chat-bubble:nth-child(2) { animation-delay: 130ms; }
+.chat-thread .chat-bubble:nth-child(3) { animation-delay: 180ms; }
+.chat-thread .chat-bubble:nth-child(4) { animation-delay: 230ms; }
+.chat-thread .chat-bubble:nth-child(5) { animation-delay: 280ms; }
+.chat-thread .chat-bubble:nth-child(n + 6) { animation-delay: 330ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

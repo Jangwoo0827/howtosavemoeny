@@ -7,8 +7,19 @@ const TABS = [
 ];
 
 export default function TabBar({ active, onChange }) {
+  const index = TABS.findIndex((t) => t.id === active);
   return (
     <nav className="tab-bar">
+      <div
+        className="tab-indicator-track"
+        style={{
+          width: `${100 / TABS.length}%`,
+          transform: `translateX(${Math.max(0, index) * 100}%)`,
+          opacity: index === -1 ? 0 : 1,
+        }}
+      >
+        <span className="tab-indicator-pill" />
+      </div>
       {TABS.map((t) => (
         <button
           key={t.id}
